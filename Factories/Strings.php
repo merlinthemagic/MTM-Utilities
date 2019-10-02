@@ -18,4 +18,11 @@ class Strings
 		}
 		return $this->_cStore[__FUNCTION__];
 	}
+	public function getHashing()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
+			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Models\Strings\Hashing();
+		}
+		return $this->_cStore[__FUNCTION__];
+	}
 }
