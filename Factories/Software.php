@@ -21,4 +21,11 @@ class Software
 		}
 		return $this->_cStore[__FUNCTION__];
 	}
+	public function getPhpTool()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
+			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Tools\Software\Php();
+		}
+		return $this->_cStore[__FUNCTION__];
+	}
 }
