@@ -5,6 +5,7 @@ namespace MTM\Utilities\Factories;
 class Strings
 {	
 	//USE: $utilObj		= \MTM\Utilities\Factories::getStrings()->__METHOD__();
+	
 	protected $_cStore=array();
 
 	public function getRandomByRegex($len, $regex="A-Za-z0-9\#\-\+\:\;\.\,\!")
@@ -22,6 +23,13 @@ class Strings
 	{
 		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
 			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Models\Strings\Hashing();
+		}
+		return $this->_cStore[__FUNCTION__];
+	}
+	public function getEmail()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
+			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Tools\Strings\Email();
 		}
 		return $this->_cStore[__FUNCTION__];
 	}

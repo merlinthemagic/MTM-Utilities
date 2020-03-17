@@ -5,6 +5,7 @@ namespace MTM\Utilities\Factories;
 class Software
 {	
 	//USE: $toolObj		= \MTM\Utilities\Factories::getSoftware()->__METHOD__();
+	
 	protected $_cStore=array();
 
 	public function getOsTool()

@@ -4,7 +4,7 @@ namespace MTM\Utilities\Factories;
 
 class Time
 {	
-	//USE: $sockObj		= \MTM\Utilities\Factories::getTime()->getMicroEpoch();
+	//USE: $floatTime		= \MTM\Utilities\Factories::getTime()->getMicroEpoch();
 	protected $_cStore=array();
 	
 	public function getMicroEpoch($float=true)
