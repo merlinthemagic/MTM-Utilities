@@ -35,6 +35,33 @@ class OperatingSystem extends \MTM\Utilities\Tools\Base
 		}
 		return $this->_cStore[$hId];
 	}
+	public function maxThreadCount()
+	{
+		//max amout of thread the os can handle
+		$hId	= hash("sha256", __FUNCTION__);
+		if (array_key_exists($hId, $this->_cStore) === false) {
+			if ($this->getType() == "linux") {
+				
+				$catPath		= $this->getExecutablePath("cat");
+				if ($catPath !== false) {
+					$strCmd		= $catPath . " /proc/sys/kernel/threads-max";
+					$data		= trim($this->exeCmd($strCmd));
+					if (preg_match("/^([0-9]+)$/", $data) == 1) {
+						$this->_cStore[$hId]	= intval($data);
+					} else {
+						throw new \Exception("Invalid return");
+					}
+					
+				}  else {
+					throw new \Exception("Missing Cat application");
+				}
+				
+			} else {
+				throw new \Exception("Not handled");
+			}
+		}
+		return $this->_cStore[$hId];
+	}
 	public function maxPidValue()
 	{
 		//max value the pid can take on the OS
