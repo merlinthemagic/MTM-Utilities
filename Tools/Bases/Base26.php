@@ -1,6 +1,6 @@
 <?php
 //© 2019 Martin Peter Madsen
-namespace MTM\Utilities\Models\Bases;
+namespace MTM\Utilities\Tools\Bases;
 
 class Base26
 {

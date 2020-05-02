@@ -2,7 +2,7 @@
 	"name" : "merlinthemagic/mtm-utilities",
 	"type" : "library",
 	"description" : "Utilities for PHP 7",
-	"version" : "0.0.4",
+	"version" : "0.0.5",
 	"keywords" : [
 		"time",
 		"guids",
