@@ -6,7 +6,7 @@ class Strings
 {	
 	//USE: $utilObj		= \MTM\Utilities\Factories::getStrings()->__METHOD__();
 	
-	protected $_cStore=array();
+	protected $_s=array();
 
 	public function getRandomByRegex($len, $regex="A-Za-z0-9\#\-\+\:\;\.\,\!")
 	{
@@ -14,23 +14,30 @@ class Strings
 	}
 	public function getRandom()
 	{
-		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
-			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Models\Strings\Random();
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Models\Strings\Random();
 		}
-		return $this->_cStore[__FUNCTION__];
+		return $this->_s[__FUNCTION__];
 	}
 	public function getHashing()
 	{
-		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
-			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Models\Strings\Hashing();
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Models\Strings\Hashing();
 		}
-		return $this->_cStore[__FUNCTION__];
+		return $this->_s[__FUNCTION__];
 	}
 	public function getEmail()
 	{
-		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
-			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Tools\Strings\Email();
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Tools\Strings\Email();
 		}
-		return $this->_cStore[__FUNCTION__];
+		return $this->_s[__FUNCTION__];
+	}
+	public function getSHA()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Tools\Strings\SHA();
+		}
+		return $this->_s[__FUNCTION__];
 	}
 }

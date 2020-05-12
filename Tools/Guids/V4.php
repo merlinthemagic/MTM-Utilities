@@ -6,7 +6,7 @@ class V4
 {
 	public function get($inclBraces=true)
 	{
-		mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+		mt_srand((double)microtime()*10000);
 		$charid	= strtoupper(md5(uniqid(rand(), true)));
 		$hyphen	= chr(45);
 		
