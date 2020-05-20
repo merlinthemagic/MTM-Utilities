@@ -19,9 +19,11 @@ if (defined("MTM_UTILITIES_BASE_PATH") === false) {
 	if (defined("MTM_LOADED_TIME") === false) {
 		define("MTM_LOADED_TIME", \MTM\Utilities\Factories::getTime()->getMicroEpoch());
 	}
-	function loadMtmUtilities()
+	function mtmUtilitiesShutdown()
 	{
-    	
+		if (defined("MTM_SHUTDOWN") === false) {
+			define("MTM_SHUTDOWN", true);
+		}
 	}
-	loadMtmUtilities();
+	register_shutdown_function("mtmUtilitiesShutdown");
 }
