@@ -6,6 +6,28 @@ class Convert
 {
 	//convert any size number from any base to any base
 	
+	public function hexToBase36($str)
+	{
+		if (is_string($str) === false) {
+			throw new \Exception("Input must be a string");
+		}
+		$str	= strtoupper($str);
+		if (preg_match("/^([A-F0-9]+)$/", $str) == 0) {
+			throw new \Exception("Invalid chars in input");
+		}
+		return $this->anyToAny($str, "0123456789ABCDEF", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	}
+	public function base36ToHex($str)
+	{
+		if (is_string($str) === false) {
+			throw new \Exception("Input must be a string");
+		}
+		$str	= strtoupper($str);
+		if (preg_match("/^([A-Z0-9]+)$/", $str) == 0) {
+			throw new \Exception("Invalid chars in input");
+		}
+		return $this->anyToAny($str, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", "0123456789ABCDEF");
+	}
 	public function hexToBin($str)
 	{
 		if (is_string($str) === false) {
