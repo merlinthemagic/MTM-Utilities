@@ -8,13 +8,14 @@ class Random
 	{
 		$chars        = "ABCDEFGHKLMNOPQRSTUVWXYZabcdefghklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=(){}[]:;,.<>?";
 		$uChars       = preg_replace("/[^".$regex."]/", "", $chars);
-		$charLen      = strlen($uChars) - 1;
-		if (strlen($charLen) > 0) {
+		$charLen      = strlen($uChars);
+		if ($charLen > 0) {
 			$str		= "";
 			for ($x=0; $x < $len; $x++) {
-				$str	.= $uChars[rand(0, $charLen)];
+				$str	.= $uChars[rand(0, ($charLen - 1))];
 			}
 			return $str;
+			
 		} else {
 			throw new \Exception("Invalid regex");
 		}
