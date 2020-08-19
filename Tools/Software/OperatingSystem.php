@@ -27,8 +27,16 @@ class OperatingSystem extends \MTM\Utilities\Tools\Base
 				if (strlen($path) > 0) {
 					$this->_cStore[$hId]	= $path;	
 				} else {
-					$this->_cStore[$hId]	= false;
+					//dunno why, but even for root which sometimes fails
+					$strCmd		= "whereis " . $name;
+					$path		= trim($this->exeCmd($strCmd, false));
+					if (preg_match("/".$name."\:\s(\/.*\/".$name.")\s/", $path, $raw) === 1) {
+						$this->_cStore[$hId]	= trim($raw[1]);
+					} else {
+						$this->_cStore[$hId]	= false;
+					}
 				}
+				
 			} else {
 				throw new \Exception("Not handled");
 			}

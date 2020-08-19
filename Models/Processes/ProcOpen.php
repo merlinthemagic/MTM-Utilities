@@ -36,6 +36,10 @@ class ProcOpen
 	}
 	public function read($timeout=2500, $returnOnEmpty=true)
 	{
+		//set timeouts on your program executing if possible and set this timeout higher
+		//we get returns that include errors, but only if the program has exited
+		//if you dont wait long enough you simply get a empty data and error == "Timeout"
+		
 		if ($this->_isTerm === false) {
 			$this->initialize();
 			
@@ -66,6 +70,7 @@ class ProcOpen
 					if ($returnOnEmpty === true && $rObj->data !== null) {
 						//we recived some data and then it stopped
 						return $rObj;
+						
 					} else {
 						usleep(10000);
 					}
