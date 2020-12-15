@@ -6,7 +6,7 @@ class SHA
 {
 	public function isValid256($str)
 	{
-		if (preg_match("/^([0-9a-fA-F]{64})$/", $str) === 1) {
+		if (is_string($str) === true && preg_match("/^([0-9a-fA-F]{64})$/", $str) === 1) {
 			return true;
 		} else {
 			return false;
@@ -14,7 +14,7 @@ class SHA
 	}
 	public function isValid512($str)
 	{
-		if (preg_match("/^([0-9a-fA-F]{128})$/", $str) === 1) {
+		if (is_string($str) === true && preg_match("/^([0-9a-fA-F]{128})$/", $str) === 1) {
 			return true;
 		} else {
 			return false;

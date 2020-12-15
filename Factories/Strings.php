@@ -40,4 +40,11 @@ class Strings
 		}
 		return $this->_s[__FUNCTION__];
 	}
+	public function getBytes()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Tools\Strings\Bytes();
+		}
+		return $this->_s[__FUNCTION__];
+	}
 }

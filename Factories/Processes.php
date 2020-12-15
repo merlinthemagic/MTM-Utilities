@@ -15,4 +15,12 @@ class Processes
 		}
 		return $rObj;
 	}
+	public function getCallBacks()
+	{
+		$rObj	= new \MTM\Utilities\Models\Processes\ProcOpen();
+		if ($strCmd !== null) {
+			$rObj->setCommand($strCmd);
+		}
+		return $rObj;
+	}
 }

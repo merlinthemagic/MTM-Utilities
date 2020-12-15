@@ -50,7 +50,7 @@ class Convert
 		}
 		return $this->anyToAny($str, "01", "0123456789ABCDEF");
 	}
-	protected function anyToAny($str, $from, $to)
+	public function anyToAny($str, $from, $to)
 	{
 		//src: https://www.php.net/manual/en/function.base-convert
 		if ($from == $to){
@@ -84,7 +84,6 @@ class Convert
 			$retval = $toBase[bcmod($base10,$toLen)].$retval;
 			$base10 = bcdiv($base10,$toLen,0);
 		}
-		return $retval;
-				
+		return $retval;		
 	}
 }
