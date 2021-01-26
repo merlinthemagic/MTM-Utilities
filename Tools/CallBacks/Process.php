@@ -6,8 +6,11 @@ class Process
 {
 	protected $_loopCbs=array();
 	protected $_lastEvent=0; //last time a call back resulted in an event
-	protected $_maxIdle=2; //in seconds
-	protected $_idleSleep=10000;//in micro secs
+	protected $_idleCur=0; //in micro secs
+	protected $_idleStep=5;//in micro secs
+	protected $_idleMax=100000;//in micro secs
+	protected $_idleCount=0;
+	protected $_idleStart=500;//how many empty runs before starting to slow down 
 	protected $_runStatus=false;
 	
 	public function addLoopCb($obj, $method)
@@ -48,11 +51,12 @@ class Process
 				$this->runOnce();
 			}
 		} else {
-			$cTime	= \MTM\Utilities\Factories::getTime()->getMicroEpoch();
-			$tTime	= $cTime + $runTime;
+			$timeFact	= \MTM\Utilities\Factories::getTime();
+			$cTime		= $timeFact->getMicroEpoch();
+			$tTime		= $cTime + $runTime;
 			while($this->_runStatus === true && $tTime > $cTime) {
 				$this->runOnce();
-				$cTime	= \MTM\Utilities\Factories::getTime()->getMicroEpoch();
+				$cTime	= $timeFact->getMicroEpoch();
 			}
 		}
 	}
@@ -61,17 +65,22 @@ class Process
 		$cTime		= \MTM\Utilities\Factories::getTime()->getMicroEpoch();
 		$count		= 0;
 		foreach ($this->_loopCbs as $cbObj) {
-			
 			$rData	= call_user_func_array($cbObj, array());
 			if (is_int($rData) === true) {
 				$count	+= $rData;
 			}
 		}
+
 		if ($count > 0) {
 			$this->_lastEvent	= $cTime;
-		} elseif (($this->_lastEvent + $this->_maxIdle) < $cTime) {
+			$this->_idleCur		= 0;
+			$this->_idleCount	= 0;
+		} elseif (++$this->_idleCount > $this->_idleStart) {
 			//slow down we have not received a message in awhile
-			usleep($this->_idleSleep);
+			if ($this->_idleCur < $this->_idleMax) {
+				$this->_idleCur	+= $this->_idleStep;
+			}
+			usleep($this->_idleCur);
 		}
 		return $count;
 	}
