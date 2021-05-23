@@ -11,12 +11,7 @@ class Php extends \MTM\Utilities\Tools\Base
 	{
 		if ($this->_bShell === null) {
 			//this is a shared 'sh' shell
-			$path	= \MTM\Utilities\Factories::getSoftware()->getOsTool()->getExecutablePath("sh");
-			if ($path === false) {
-				throw new \Exception("Executable for sh does not exist");
-			} else {
-				$this->_bShell	= \MTM\Utilities\Factories::getProcesses()->getProcOpen($path);
-			}
+			$this->_bShell	= \MTM\Utilities\Factories::getSoftware()->getShellTool()->getSH();
 		}
 		return $this->_bShell;
 	}
