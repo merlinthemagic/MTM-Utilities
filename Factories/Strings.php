@@ -47,4 +47,11 @@ class Strings
 		}
 		return $this->_s[__FUNCTION__];
 	}
+	public function getEscape()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Tools\Strings\Escape();
+		}
+		return $this->_s[__FUNCTION__];
+	}
 }
