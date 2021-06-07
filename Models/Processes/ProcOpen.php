@@ -43,6 +43,12 @@ class ProcOpen
 		if ($this->_isTerm === false) {
 			$this->initialize();
 			
+			if (is_bool($returnOnEmpty) === false) {
+				throw new \Exception("invalid returnOnEmpty input");
+			} elseif (is_int($timeout) === false) {
+				throw new \Exception("invalid timeout input");
+			}
+			
 			$tTime			= \MTM\Utilities\Factories::getTime()->getMicroEpoch() + ($timeout / 1000);
 			$rObj			= new \stdClass();
 			$rObj->data		= null;
@@ -78,7 +84,54 @@ class ProcOpen
 			}
 
 		} else {
-			throw new \Exception("Cannot write, process is terminated");
+			throw new \Exception("Cannot read, process is terminated");
+		}
+	}
+	public function readRegEx($regEx, $timeout=10000)
+	{
+		//reads until regEx is found or timeout is reached
+		
+		if ($this->_isTerm === false) {
+			$this->initialize();
+			
+			if (is_string($regEx) === false) {
+				throw new \Exception("invalid regex input");
+			} elseif (is_int($timeout) === false) {
+				throw new \Exception("invalid timeout input");
+			}
+			
+			$tTime			= \MTM\Utilities\Factories::getTime()->getMicroEpoch() + ($timeout / 1000);
+			$rObj			= new \stdClass();
+			$rObj->data		= null;
+			$rObj->error	= null;
+			
+			while (true) {
+				
+				$recv	= false;
+				$eData	= fread($this->_errorPipe, 1024);
+				if (strlen($eData) > 0) {
+					$rObj->error	.= $eData;
+					$recv			= true;
+				}
+				
+				$nData	= fread($this->_readPipe, 1024);
+				if ($nData != "") {
+					$rObj->data		.= $nData;
+					$recv			= true;
+				}
+				
+				if($tTime < \MTM\Utilities\Factories::getTime()->getMicroEpoch()) {
+					$rObj->error	.= "Timeout";
+					return $rObj;
+				} elseif ($recv === true && preg_match("/".$regEx."/s", $rObj->data) === 1) {
+					return $rObj;
+				} else {
+					usleep(10000);
+				}
+			}
+			
+		} else {
+			throw new \Exception("Cannot read, process is terminated");
 		}
 	}
 	public function setCommand($strCmd)
