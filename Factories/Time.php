@@ -25,10 +25,10 @@ class Time
 		}
 		return $this->_cStore[__FUNCTION__];
 	}
-	public function getRouterOsTool()
+	public function getUnixEpochTool()
 	{
 		if (array_key_exists(__FUNCTION__, $this->_cStore) === false) {
-			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Tools\Time\RouterOS();
+			$this->_cStore[__FUNCTION__]	= new \MTM\Utilities\Tools\Time\UnixEpoch();
 		}
 		return $this->_cStore[__FUNCTION__];
 	}
