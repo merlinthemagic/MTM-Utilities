@@ -1,6 +1,6 @@
 <?php
-//© 2020 Martin Peter Madsen
-namespace MTM\Utilities\Tools\Strings;
+//© 2021 Martin Peter Madsen
+namespace MTM\Utilities\Tools\Hashing;
 
 class SHA
 {
