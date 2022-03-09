@@ -5,7 +5,14 @@ namespace MTM\Utilities\Tools\Bases;
 class Convert
 {
 	//convert any size number from any base to any base
+	protected $_bcMath=true;
 	
+	public function __construct()
+	{
+		if (extension_loaded("bcmath") === false) {
+			$this->_bcMath	= false;
+		}
+	}
 	public function hexToBase36($str)
 	{
 		if (is_string($str) === false) {
@@ -32,7 +39,7 @@ class Convert
 	{
 		if (is_string($str) === false) {
 			throw new \Exception("Input must be a string");
-		}	
+		}
 		$str	= strtoupper($str);
 		if (preg_match("/^([A-F0-9]+)$/", $str) == 0) {
 			throw new \Exception("Invalid chars in input");
@@ -50,11 +57,24 @@ class Convert
 		}
 		return $this->anyToAny($str, "01", "0123456789ABCDEF");
 	}
+	public function hexToDec($str)
+	{
+		if (is_string($str) === false) {
+			throw new \Exception("Input must be a string");
+		}
+		$str	= strtoupper($str);
+		if (preg_match("/^([A-F0-9]+)$/", $str) == 0) {
+			throw new \Exception("Invalid chars in input");
+		}
+		return $this->anyToAny($str, "0123456789ABCDEF", "0123456789");
+	}
 	public function anyToAny($str, $from, $to)
 	{
 		//src: https://www.php.net/manual/en/function.base-convert
 		if ($from == $to){
 			return $str;
+		} elseif ($this->_bcMath === false) {
+			throw new \Exception("PHP extension; bcmath, is not loaded");
 		}
 
 		$fromBase	= str_split($from, 1);
@@ -72,9 +92,9 @@ class Convert
 			return $retval;
 		}
 		if ($from != '0123456789') {
-			$base10= $this->anyToAny($str, $from, '0123456789');
+			$base10		= $this->anyToAny($str, $from, '0123456789');
 		} else {
-			$base10 = $str;
+			$base10 	= $str;
 		}
 		if ($base10<strlen($to)) {
 			return $toBase[$base10];

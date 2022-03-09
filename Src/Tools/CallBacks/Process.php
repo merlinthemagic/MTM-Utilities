@@ -26,15 +26,21 @@ class Process
 			throw new \Exception("Invalid input, object does not contain method");
 		}
 		$this->removeLoopCb($obj, $method);
-		$this->_loopCbs[]	= array($obj, $method);
+		$cbObj				= new \stdClass();
+		$cbObj->active		= true; //avoids running callbacks that have been removed mid exec of runOnce()
+		$cbObj->obj			= $obj;
+		$cbObj->method		= $method;
+		
+		$this->_loopCbs[]	= $cbObj;
 		$this->resetRunStatus();
 		return $this;
 	}
 	public function removeLoopCb($obj, $method)
 	{
-		foreach ($this->_loopCbs as $e => $eObj) {
-			if ($eObj[0] === $obj && $eObj[1] === $method) {
-				unset($this->_loopCbs[$e]);
+		foreach ($this->_loopCbs as $index => $cbObj) {
+			if ($cbObj->obj === $obj && $cbObj->method === $method) {
+				$cbObj->active		= false;
+				unset($this->_loopCbs[$index]);
 				$this->resetRunStatus();
 				break;
 			}
@@ -65,9 +71,11 @@ class Process
 		$cTime		= \MTM\Utilities\Factories::getTime()->getMicroEpoch();
 		$count		= 0;
 		foreach ($this->_loopCbs as $cbObj) {
-			$rData	= call_user_func_array($cbObj, array());
-			if (is_int($rData) === true) {
-				$count	+= $rData;
+			if ($cbObj->active === true) {
+				$rData	= call_user_func_array(array($cbObj->obj, $cbObj->method), array());
+				if (is_int($rData) === true) {
+					$count	+= $rData;
+				}
 			}
 		}
 
