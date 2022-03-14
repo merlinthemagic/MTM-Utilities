@@ -5,7 +5,7 @@ namespace MTM\Utilities\Factories;
 class Processes
 {	
 	//USE: $procObj		= \MTM\Utilities\Factories::getProcesses()->__METHOD__();
-	protected $_cStore=array();
+	protected $_s=array();
 	
 	public function getProcOpen($strCmd=null)
 	{
@@ -15,12 +15,15 @@ class Processes
 		}
 		return $rObj;
 	}
-	public function getCallBacks()
+	public function getBashShell($shared=true)
 	{
-		$rObj	= new \MTM\Utilities\Models\Processes\ProcOpen();
-		if ($strCmd !== null) {
-			$rObj->setCommand($strCmd);
+		if ($shared === true) {
+			if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+				$this->_s[__FUNCTION__]	= new \MTM\Utilities\Models\Processes\BashShell\Zstance();
+			}
+			return $this->_s[__FUNCTION__];
+		} else {
+			return new \MTM\Utilities\Models\Processes\BashShell\Zstance();
 		}
-		return $rObj;
 	}
 }

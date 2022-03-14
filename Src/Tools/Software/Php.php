@@ -18,13 +18,23 @@ class Php extends \MTM\Utilities\Tools\Base
 	public function getInteractiveShell()
 	{
 		if ($this->_iShell === null) {
-			$path	= \MTM\Utilities\Factories::getSoftware()->getOsTool()->getExecutablePath("php");
-			if ($path === false) {
-				throw new \Exception("Executable for php does not exist");
-			} else {
-				$this->_iShell	= \MTM\Utilities\Factories::getProcesses()->getProcOpen($path . " -a");
-			}
+			$path			= $this->getExecutablePath(false);
+			$this->_iShell	= \MTM\Utilities\Factories::getProcesses()->getProcOpen($path . " -a");
 		}
 		return $this->_iShell;
+	}
+	public function getExecutablePath($curOnly=false)
+	{
+		if (defined("PHP_BINARY") === true) {
+			//perfer the current and not what the environment returns
+			return PHP_BINARY;
+			
+		} elseif ($curOnly === false) {
+			$path	= \MTM\Utilities\Factories::getSoftware()->getOsTool()->getExecutablePath("php");
+			if ($path !== false) {
+				return $path;
+			}
+		}
+		throw new \Exception("Unable to determine executable for php");
 	}
 }
