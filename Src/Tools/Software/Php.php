@@ -6,7 +6,24 @@ class Php extends \MTM\Utilities\Tools\Base
 {
 	protected $_bShell=null;
 	protected $_iShell=null;
+	protected $_memLimit=null;
 	
+	public function getMemoryLimit($refresh=false)
+	{
+		if ($this->_memLimit === null || $refresh === true) {
+			$this->_memLimit = ini_get("memory_limit");
+			if (preg_match('/^(\d+)(.)$/', $this->_memLimit, $raw) === 1) {
+				if ($raw[2] == "M") {
+					$this->_memLimit = $raw[1] * 1024 * 1024;
+				} elseif ($raw[2] == "K") {
+					$this->_memLimit = $raw[1] * 1024;
+				} elseif ($raw[2] == "G") {
+					$this->_memLimit = $raw[1] * 1024 * 1024 * 1024;
+				}
+			}
+		}
+		return $this->_memLimit;
+	}
 	public function getShell()
 	{
 		if ($this->_bShell === null) {
