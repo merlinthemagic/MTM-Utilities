@@ -5,6 +5,7 @@ namespace MTM\Utilities\Tools\CallBacks;
 class Process
 {
 	protected $_loopCbs=array();
+	protected $_totalCount=0; //total amount of messages handled
 	protected $_lastEvent=0; //last time a call back resulted in an event
 	protected $_idleCur=0; //in micro secs
 	protected $_idleStep=5;//in micro secs
@@ -80,6 +81,7 @@ class Process
 		}
 
 		if ($count > 0) {
+			$this->_totalCount	+= $count;
 			$this->_lastEvent	= $cTime;
 			$this->_idleCur		= 0;
 			$this->_idleCount	= 0;
@@ -91,6 +93,10 @@ class Process
 			usleep($this->_idleCur);
 		}
 		return $count;
+	}
+	public function getTotalCount()
+	{
+		return $this->_totalCount;
 	}
 	public function terminate($throw=false)
 	{
