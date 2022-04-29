@@ -51,6 +51,7 @@ class Loop
 				$this->runOnce();
 				$sleep	= intval(($this->_nextRun - $tFact->getMicroEpoch()) * 1000000) - 1000;
 				if ($sleep > 0) {
+// 					echo "Sleeping: ".$sleep."\n";
 					usleep($sleep);
 				}
 			}
