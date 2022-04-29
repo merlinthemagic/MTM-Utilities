@@ -51,7 +51,6 @@ class Loop
 				$this->runOnce();
 				$sleep	= intval(($this->_nextRun - $tFact->getMicroEpoch()) * 1000000) - 1000;
 				if ($sleep > 0) {
-					echo "Sleeping: ".$sleep."\n";
 					usleep($sleep);
 				}
 			}
@@ -77,6 +76,7 @@ class Loop
 		$this->_nextRun	= $tFact->getMicroEpoch() + 60;
 		foreach ($this->_eventObjs as $evObj) {
 			if ($evObj->isActive() === true && $evObj->getNextRun() <= $tFact->getMicroEpoch()) {
+				//set a default poll delay, the call back should modify the eventObj if a different delay is desired
 				$evObj->setNextRunDelay($this->_defaultInterval)->execute();
 			}
 			if ($this->_nextRun > $evObj->getNextRun()) {
