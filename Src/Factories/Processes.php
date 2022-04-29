@@ -26,4 +26,11 @@ class Processes
 			return new \MTM\Utilities\Models\Processes\BashShell\Zstance();
 		}
 	}
+	public function getEventLoop()
+	{
+		if (array_key_exists(__FUNCTION__, $this->_s) === false) {
+			$this->_s[__FUNCTION__]	= new \MTM\Utilities\Tools\EventLoop\Loop();
+		}
+		return $this->_s[__FUNCTION__];
+	}
 }
