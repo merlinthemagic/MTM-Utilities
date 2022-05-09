@@ -14,7 +14,7 @@ class Time
 		if ($float === true) {
 			return (float) $mEpoch;
 		} else {
-			//is string but has higher precision
+			//is string but has higher precision and is always a decimal not an int
 			return $mEpoch;
 		}
 	}
