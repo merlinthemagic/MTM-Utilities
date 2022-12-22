@@ -1,12 +1,12 @@
 <?php
-//© 2019 Martin Peter Madsen
+//ï¿½ 2019 Martin Peter Madsen
 namespace MTM\Utilities\Tools\Guids;
 
 class V4
 {
 	public function get($inclBraces=true)
 	{
-		mt_srand((double)microtime()*10000);
+		@mt_srand((double)microtime()*10000);
 		$charid	= strtoupper(md5(uniqid(rand(), true)));
 		$hyphen	= chr(45);
 		
