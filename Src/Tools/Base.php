@@ -1,10 +1,11 @@
 <?php
-//© 2019 Martin Peter Madsen
+//ï¿½ 2019 Martin Peter Madsen
 namespace MTM\Utilities\Tools;
 
-class Base
+class Base extends \MTM\Utilities\Tools\Validations\V1
 {
 	protected $_cStore=array();
+	protected $_s=array();
 	
 	protected function getOs()
 	{
