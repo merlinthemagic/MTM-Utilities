@@ -1,5 +1,5 @@
 <?php
-//© 2022 Martin Peter Madsen
+//ï¿½ 2022 Martin Peter Madsen
 namespace MTM\Utilities\Tools\EventLoop;
 
 class Event
@@ -8,6 +8,7 @@ class Event
 	protected $_cbObj=null;
 	protected $_cbMethod=null;
 	protected $_active=false;
+	protected $_isExecuting=false;
 	protected $_nextRun=0;
 
 	public function __construct($obj, $method)
@@ -46,6 +47,10 @@ class Event
 	{
 		return $this->_active;
 	}
+	public function isExecuting()
+	{
+		return $this->_isExecuting;
+	}
 	public function getNextRun()
 	{
 		return $this->_nextRun;
@@ -62,8 +67,15 @@ class Event
 	}
 	public function execute()
 	{
-		//let exceptions through
-		call_user_func_array(array($this->getCbObj(), $this->getCbMethod()), array($this));
+		try {
+			$this->_isExecuting		= true;
+			call_user_func_array(array($this->getCbObj(), $this->getCbMethod()), array($this));
+			$this->_isExecuting		= false;
+		} catch (\Exception $e) {
+			$this->_isExecuting		= false;
+			//let exceptions through
+			throw $e;
+		}
 		return $this;
 	}
 	public function terminate()

@@ -1,5 +1,5 @@
 <?php
-//© 2022 Martin Peter Madsen
+//ï¿½ 2022 Martin Peter Madsen
 namespace MTM\Utilities\Tools\EventLoop;
 
 class Loop
@@ -75,12 +75,16 @@ class Loop
 		$tFact			= \MTM\Utilities\Factories::getTime();
 		$this->_nextRun	= $tFact->getMicroEpoch() + 60;
 		foreach ($this->_eventObjs as $evObj) {
-			if ($evObj->isActive() === true && $evObj->getNextRun() <= $tFact->getMicroEpoch()) {
-				//set a default poll delay, the call back should modify the eventObj if a different delay is desired
-				$evObj->setNextRunDelay($this->_defaultInterval)->execute();
-			}
-			if ($this->_nextRun > $evObj->getNextRun()) {
-				$this->_nextRun		= $evObj->getNextRun();
+			
+			//dont allow a currently executing event to trigger again, that leads us down a death spiral
+			if ($evObj->isExecuting() === false) {
+				if ($evObj->isActive() === true && $evObj->getNextRun() <= $tFact->getMicroEpoch()) {
+					//set a default poll delay, the call back should modify the eventObj if a different delay is desired
+					$evObj->setNextRunDelay($this->_defaultInterval)->execute();
+				}
+				if ($this->_nextRun > $evObj->getNextRun()) {
+					$this->_nextRun		= $evObj->getNextRun();
+				}
 			}
 		}
 	}
