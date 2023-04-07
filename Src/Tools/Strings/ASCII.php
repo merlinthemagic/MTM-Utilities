@@ -1,10 +1,11 @@
 <?php
-//© 2022 Martin Peter Madsen
+//ï¿½ 2022 Martin Peter Madsen
 namespace MTM\Utilities\Tools\Strings;
 
 class ASCII
 {
-	protected $_findV1=array("/[À-Å]/","/Æ/","/Ç/","/[È-Ë]/","/[Ì-Ï]/","/Ð/","/Ñ/","/[Ò-ÖØ]/","/×/","/[Ù-Ü]/","/[Ý-ß]/","/[à-å]/","/æ/","/ç/","/[è-ë]/","/[ì-ï]/","/ð/","/ñ/","/[ò-öø]/","/÷/","/[ù-ü]/","/[ý-ÿ]/");
+	//something happened to the formatting of this line and it does not seem to work any longer
+	protected $_findV1=array("/[ï¿½-ï¿½]/","/ï¿½/","/ï¿½/","/[ï¿½-ï¿½]/","/[ï¿½-ï¿½]/","/ï¿½/","/ï¿½/","/[ï¿½-ï¿½ï¿½]/","/ï¿½/","/[ï¿½-ï¿½]/","/[ï¿½-ï¿½]/","/[ï¿½-ï¿½]/","/ï¿½/","/ï¿½/","/[ï¿½-ï¿½]/","/[ï¿½-ï¿½]/","/ï¿½/","/ï¿½/","/[ï¿½-ï¿½ï¿½]/","/ï¿½/","/[ï¿½-ï¿½]/","/[ï¿½-ï¿½]/");
 	protected $_replaceV1=array("A","AE","C","E","I","D","N","O","X","U","Y","a","ae","c","e","i","d","n","o","x","u","y");
 	
 	public function replaceV1($str)
@@ -16,5 +17,21 @@ class ASCII
 		//src: https://stackoverflow.com/questions/9720665/how-to-convert-special-characters-to-normal-characters
 		$newStr		= preg_replace($this->_findV1, $this->_replaceV1, $str);
 		return $newStr;
+	}
+	public function removeV1($str)
+	{
+		//removes non-printable ASCII chars
+		if (is_string($str) === false) {
+			throw new \Exception("Invalid input");
+		}
+		//http://www.columbia.edu/kermit/ascii.html
+		$output		= "";
+		foreach (str_split($str, 1) as $chr) {
+			$ord	= ord($chr);
+			if ($ord > 31 && $ord < 127) {
+				$output		.= $chr;
+			}
+		}
+		return $output;
 	}
 }

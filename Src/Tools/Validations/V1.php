@@ -149,7 +149,7 @@ class V1
 	}
 	public function isMd5($input, $throw=true)
 	{
-		if (preg_match("/^[a-f0-9]{32}$/", $input) === 1) {
+		if ($this->isStr($input, false) === true && preg_match("/^[a-f0-9]{32}$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not a md5 hash", 49791);
@@ -169,7 +169,7 @@ class V1
 	}
 	public function isDecimal($input, $throw=true)
 	{
-		if (preg_match("/^([0-9]+\.[0-9]+)$/", $input) === 1) {
+		if ($this->isStr($input, false) === true && preg_match("/^([0-9]+\.[0-9]+)$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not an decimal number", 49779);
@@ -269,7 +269,7 @@ class V1
 	}
 	public function isEpoch32($input, $throw=true)
 	{
-		if (preg_match("/^(-)?([0-9]{10})$/", $input) === 1 && $input < 2147483648 && $input > -2147483649) {
+		if ($this->isSig32Int($input, false) === true && preg_match("/^(-)?([0-9]{10})$/", $input) === 1 && $input < 2147483648 && $input > -2147483649) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not an a signed 32bit epoch", 49790);
