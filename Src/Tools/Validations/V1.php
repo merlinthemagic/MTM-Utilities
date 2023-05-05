@@ -24,6 +24,16 @@ class V1
 			return false;
 		}
 	}
+	public function isStrInt($input, $throw=true)
+	{
+		if ($this->isStr($input, false) === true && ctype_digit($input) === true) {
+			return true;
+		} elseif ($throw === true) {
+			throw new \Exception("Input is not a string integer", 49793);
+		} else {
+			return false;
+		}
+	}
 	public function isStr($input, $throw=true)
 	{
 		if (is_string($input) === true) {
