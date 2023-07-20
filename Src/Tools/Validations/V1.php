@@ -289,7 +289,7 @@ class V1
 	}
 	public function isMicroEpoch32($input, $throw=true)
 	{
-		if (preg_match("/^(-)?([0-9]{10}\.[0-9]{6})$/", $input) === 1 && ceil($input) < 2147483648 && floor($input) > -2147483649) {
+		if (preg_match("/^(-)?([0-9]{10}\.[0-9]{1,6})$/", $input) === 1 && ceil($input) < 2147483648 && floor($input) > -2147483649) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not an a signed 32bit epoch with 6 decimals", 49790);
