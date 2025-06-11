@@ -259,7 +259,12 @@ class V1
 	}
 	public function isHexDecimal($input, $throw=true)
 	{
-		if (is_string($input) === true && preg_match("/^[a-f0-9]+$/", $input) === 1) {
+		if (
+			(
+				is_string($input) === true
+				|| is_int($input) === true
+			)
+			&& preg_match("/^[a-f0-9]+$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not hex decimal string", 49787);
@@ -269,7 +274,12 @@ class V1
 	}
 	public function isMacAddr($input, $throw=true)
 	{
-		if (preg_match("/^[a-fA-F0-9]{12}$/", $input) === 1) {
+		if (
+			(
+				is_string($input) === true
+				|| is_int($input) === true
+			) 
+			&& preg_match("/^[a-fA-F0-9]{12}$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not a mac address", 49788);
@@ -289,7 +299,16 @@ class V1
 	}
 	public function isMicroEpoch32($input, $throw=true)
 	{
-		if (preg_match("/^(-)?([0-9]{10}\.[0-9]{1,6})$/", $input) === 1 && ceil($input) < 2147483648 && floor($input) > -2147483649) {
+		if (
+			(
+				is_string($input) === true
+				|| is_int($input) === true
+				|| is_float($input) === true
+			) 
+			&& preg_match("/^(-)?([0-9]{10}\.[0-9]{1,6})$/", $input) === 1 
+			&& ceil($input) < 2147483648 
+			&& floor($input) > -2147483649
+		) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not an a signed 32bit epoch with 6 decimals", 49790);
