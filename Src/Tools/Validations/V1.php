@@ -137,6 +137,16 @@ class V1
 			return false;
 		}
 	}
+	public function isSha512($input, $throw=true)
+	{
+		if (preg_match("/^[a-f0-9]{128}$/", $input) === 1) {
+			return true;
+		} elseif ($throw === true) {
+			throw new \Exception("Input is not a sha512 hash", 49794);
+		} else {
+			return false;
+		}
+	}
 	public function isSha256($input, $throw=true)
 	{
 		if (preg_match("/^[a-f0-9]{64}$/", $input) === 1) {
