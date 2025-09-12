@@ -1,5 +1,5 @@
 <?php
-//© 2019 Martin Peter Madsen
+//ï¿½ 2019 Martin Peter Madsen
 if (defined("MTM_UTILITIES_BASE_PATH") === false) {
 	define("MTM_UTILITIES_BASE_PATH", __DIR__ . DIRECTORY_SEPARATOR);
 	spl_autoload_register(function($className)
