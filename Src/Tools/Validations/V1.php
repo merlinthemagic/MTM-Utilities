@@ -24,8 +24,19 @@ class V1
 			return false;
 		}
 	}
+	public function isFloat($input, $throw=true)
+	{
+		if (is_float($input) === true) {
+			return true;
+		} elseif ($throw === true) {
+			throw new \Exception("Input is not a float", 49795);
+		} else {
+			return false;
+		}
+	}
 	public function isStrInt($input, $throw=true)
 	{
+		//string of all numbers
 		if ($this->isStr($input, false) === true && ctype_digit($input) === true) {
 			return true;
 		} elseif ($throw === true) {
@@ -139,7 +150,7 @@ class V1
 	}
 	public function isSha512($input, $throw=true)
 	{
-		if (preg_match("/^[a-f0-9]{128}$/", $input) === 1) {
+		if ($this->isStrMax($input, 128, false) === true && preg_match("/^[a-f0-9]{128}$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not a sha512 hash", 49794);
@@ -149,7 +160,7 @@ class V1
 	}
 	public function isSha256($input, $throw=true)
 	{
-		if (preg_match("/^[a-f0-9]{64}$/", $input) === 1) {
+		if ($this->isStrMax($input, 64, false) === true && preg_match("/^[a-f0-9]{64}$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not a sha256 hash", 49776);
@@ -159,7 +170,7 @@ class V1
 	}
 	public function isSha1($input, $throw=true)
 	{
-		if (preg_match("/^[a-f0-9]{40}$/", $input) === 1) {
+		if ($this->isStrMax($input, 40, false) === true && preg_match("/^[a-f0-9]{40}$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not a sha1 hash", 49722);
@@ -169,7 +180,7 @@ class V1
 	}
 	public function isMd5($input, $throw=true)
 	{
-		if ($this->isStr($input, false) === true && preg_match("/^[a-f0-9]{32}$/", $input) === 1) {
+		if ($this->isStrMax($input, 32, false) === true &&  preg_match("/^[a-f0-9]{32}$/", $input) === 1) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not a md5 hash", 49791);
@@ -271,8 +282,8 @@ class V1
 	{
 		if (
 			(
-				is_string($input) === true
-				|| is_int($input) === true
+				$this->isStr($input, false) === true
+				|| $this->isInt($input, false) === true
 			)
 			&& preg_match("/^[a-f0-9]+$/", $input) === 1) {
 			return true;
@@ -286,8 +297,8 @@ class V1
 	{
 		if (
 			(
-				is_string($input) === true
-				|| is_int($input) === true
+				$this->isStr($input, false) === true
+				|| $this->isInt($input, false) === true
 			) 
 			&& preg_match("/^[a-fA-F0-9]{12}$/", $input) === 1) {
 			return true;
@@ -299,7 +310,11 @@ class V1
 	}
 	public function isEpoch32($input, $throw=true)
 	{
-		if ($this->isSig32Int($input, false) === true && preg_match("/^(-)?([0-9]{10})$/", $input) === 1 && $input < 2147483648 && $input > -2147483649) {
+		if (
+			$this->isSig32Int($input, false) === true 
+			&& preg_match("/^(-)?([0-9]{10})$/", $input) === 1 
+			&& $input < 2147483648 && $input > -2147483649
+		) {
 			return true;
 		} elseif ($throw === true) {
 			throw new \Exception("Input is not an a signed 32bit epoch", 49790);
@@ -311,12 +326,12 @@ class V1
 	{
 		if (
 			(
-				is_string($input) === true
-				|| is_int($input) === true
-				|| is_float($input) === true
+				$this->isInt($input, false) === true
+				|| $this->isStr($input, false) === true
+				|| $this->isFloat($input, false) === true
 			) 
 			&& preg_match("/^(-)?([0-9]{10}\.[0-9]{1,6})$/", $input) === 1 
-			&& ceil($input) < 2147483648 
+			&& ceil($input) < 2147483648
 			&& floor($input) > -2147483649
 		) {
 			return true;
