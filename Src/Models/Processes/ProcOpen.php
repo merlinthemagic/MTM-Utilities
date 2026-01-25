@@ -1,5 +1,5 @@
 <?php
-//© 2019 Martin Peter Madsen
+//ï¿½ 2019 Martin Peter Madsen
 namespace MTM\Utilities\Models\Processes;
 
 class ProcOpen
@@ -26,12 +26,12 @@ class ProcOpen
 			$len	= strlen($strCmd);
 			$bytes	= fwrite($this->_writePipe, $strCmd);
 			if ($len !== $bytes) {
-				throw new \Exception("Write failed. Wrote: " . $bytes . " of " . $len);
+				throw new \Exception("Write failed. Wrote: " . $bytes . " of " . $len, 1111);
 			}
 			return $this;
 			
 		} else {
-			throw new \Exception("Cannot write, process is terminated");
+			throw new \Exception("Cannot write, process is terminated", 1111);
 		}
 	}
 	public function read($timeout=2500, $returnOnEmpty=true)
@@ -44,9 +44,9 @@ class ProcOpen
 			$this->initialize();
 			
 			if (is_bool($returnOnEmpty) === false) {
-				throw new \Exception("invalid returnOnEmpty input");
+				throw new \Exception("invalid returnOnEmpty input", 1111);
 			} elseif (is_int($timeout) === false) {
-				throw new \Exception("invalid timeout input");
+				throw new \Exception("invalid timeout input", 1111);
 			}
 			
 			$tTime			= \MTM\Utilities\Factories::getTime()->getMicroEpoch() + ($timeout / 1000);
@@ -95,9 +95,9 @@ class ProcOpen
 			$this->initialize();
 			
 			if (is_string($regEx) === false) {
-				throw new \Exception("invalid regex input");
+				throw new \Exception("invalid regex input", 1111);
 			} elseif (is_int($timeout) === false) {
-				throw new \Exception("invalid timeout input");
+				throw new \Exception("invalid timeout input", 1111);
 			}
 			
 			$tTime			= \MTM\Utilities\Factories::getTime()->getMicroEpoch() + ($timeout / 1000);
@@ -131,7 +131,7 @@ class ProcOpen
 			}
 			
 		} else {
-			throw new \Exception("Cannot read, process is terminated");
+			throw new \Exception("Cannot read, process is terminated", 1111);
 		}
 	}
 	public function setCommand($strCmd)
@@ -148,12 +148,39 @@ class ProcOpen
 		//only available after termination
 		return $this->_exitCode;
 	}
+	public function getStatus()
+	{
+		if ($this->_isInit === true) {
+			//only available after initialize
+			return proc_get_status($this->_procRes);
+		} else {
+			return array();
+		}
+	}
+	public function getPid()
+	{
+		$rData		= $this->getStatus();
+		if (array_key_exists("pid", $rData) === true) {
+			return $rData["pid"];
+		} else {
+			return null;
+		}
+	}
+	public function getPidRunning()
+	{
+		$pid		= $this->getPid();
+		if ($pid !== null) {
+			return \MTM\Utilities\Factories::getSoftware()->getOsTool()->pidRunning($pid);
+		} else {
+			return false;
+		}
+	}
 	protected function initialize()
 	{
 		if ($this->_isInit === false) {
 
 			if ($this->getCommand() === null) {
-				throw new \Exception("Missing command");
+				throw new \Exception("Missing command", 1111);
 			}
 			$structs = array(
 					0 => array("pipe", "r"),
@@ -179,7 +206,7 @@ class ProcOpen
 				$this->_isInit		= true;
 				
 			} else {
-				throw new \Exception("Failed to stat process");
+				throw new \Exception("Failed to stat process", 1111);
 			}
 		}
 	}

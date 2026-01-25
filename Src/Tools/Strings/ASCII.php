@@ -34,4 +34,16 @@ class ASCII
 		}
 		return $output;
 	}
+	public function replaceV2($str)
+	{
+		//converts non-printable to ASCII and converts accents
+		if (is_string($str) === false) {
+			throw new \Exception("Invalid input", 1111);
+		} elseif (function_exists("iconv") === false) {
+			throw new \Exception("iconv function not available", 1111);
+		}
+		
+		$str	= iconv("UTF-8", "ASCII//TRANSLIT//IGNORE", $str);
+		return preg_replace("/[^\x20-\x7E]/", "", $str);
+	}
 }
